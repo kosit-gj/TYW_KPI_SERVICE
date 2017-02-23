@@ -27,133 +27,173 @@ Route::group(['middleware' => 'cors'], function()
 	// Session //
 	Route::get('session','AuthenticateController@index');
 	Route::post('session', 'AuthenticateController@authenticate');
-	Route::post('session/log', 'AuthenticateController@usage_log');
+	Route::get('session/debug', 'AuthenticateController@debug');
 	Route::delete('session', 'AuthenticateController@destroy');
 	
-	// Branch //
-	Route::get('dqs_branch', 'BranchController@index');
-	Route::patch('dqs_branch', 'BranchController@update');
-	Route::post('dqs_branch/export', 'BranchController@export');
-	Route::post('dqs_branch/recal_kpi', 'BranchController@recal_kpi');
+	// Common Data Set //
+	Route::get('cds/al_list','CommonDataSetController@al_list');
+	Route::get('cds/connection_list','CommonDataSetController@connection_list');
+	Route::post('cds/auto_cds','CommonDataSetController@auto_cds_name');
+	Route::patch('cds/{id}','CommonDataSetController@update');
+	Route::get('cds/{id}','CommonDataSetController@show');
+	Route::delete('cds/{id}','CommonDataSetController@destroy');
+	Route::post('cds','CommonDataSetController@store');
+	Route::get('cds','CommonDataSetController@index');
+	Route::post('cds/test_sql','CommonDataSetController@test_sql');
 	
-	// Branch Operation //
-	Route::resource('dqs_branch_operation', 'BranchOperationController');
+	// Appraisal Item //
+	Route::post('appraisal_item','AppraisalItemController@store');
+	Route::get('appraisal_item/al_list','AppraisalItemController@al_list');
+	Route::get('appraisal_item/uom_list','AppraisalItemController@uom_list');	
+	Route::get('appraisal_item/cds_list','AppraisalItemController@cds_list');
+	Route::get('appraisal_item/perspective_list','AppraisalItemController@perspective_list');
+	Route::get('appraisal_item/structure_list','AppraisalItemController@structure_list');
+	Route::post('appraisal_item/auto_appraisal_name','AppraisalItemController@auto_appraisal_name');
+	Route::get('appraisal_item','AppraisalItemController@index');
+	Route::get('appraisal_item2','AppraisalItemController@index');
 	
-	// File Management //
-	Route::get('dqs_file', 'FileController@index');
-	Route::get('dqs_file/contact_type', 'FileController@contact_type_list');
-	Route::patch('dqs_file', 'FileController@update');
-	Route::get('dqs_file/{file_id}', 'FileController@show');
+	Route::get('appraisal_item/{appraisal_item_id}','AppraisalItemController@show');
+	Route::patch('appraisal_item/{appraisal_item_id}','AppraisalItemController@update');
+	Route::delete('appraisal_item/{appraisal_item_id}','AppraisalItemController@destroy');
+	
+	// Import Employee //
+	Route::get('import_employee/role_list','ImportEmployeeController@role_list');
+	Route::get('import_employee/dep_list','ImportEmployeeController@dep_list');
+	Route::get('import_employee/sec_list','ImportEmployeeController@sec_list');
+	Route::get('import_employee/auto_position_name','ImportEmployeeController@auto_position_name');
+	Route::get('import_employee/auto_employee_name','ImportEmployeeController@auto_employee_name');
+	Route::get('import_employee/{emp_code}/role', 'ImportEmployeeController@show_role');
+	Route::patch('import_employee/{emp_code}/role', 'ImportEmployeeController@assign_role');
+	Route::patch('import_employee/role', 'ImportEmployeeController@batch_role');
+	Route::get('import_employee','ImportEmployeeController@index');
+	Route::get('import_employee/{emp_code}', 'ImportEmployeeController@show');
+	Route::patch('import_employee/{emp_code}', 'ImportEmployeeController@update');
+	Route::delete('import_employee/{emp_code}', 'ImportEmployeeController@destroy');
+	Route::post('import_employee', 'ImportEmployeeController@import');
+	
+	// CDS Result //
+	Route::get('cds_result/al_list','CDSResultController@al_list');
+	Route::get('cds_result/year_list', 'CDSResultController@year_list');
+	Route::get('cds_result/month_list', 'CDSResultController@month_list');
+	Route::post('cds_result/auto_position_name', 'CDSResultController@auto_position_name');
+	Route::post('cds_result/auto_emp_name', 'CDSResultController@auto_emp_name');
+	Route::get('cds_result', 'CDSResultController@index');
+	Route::post('cds_result/export', 'CDSResultController@export');
+	Route::post('cds_result', 'CDSResultController@import');
+	
+	// Appraisal Data //
+	Route::get('appraisal_data/structure_list','AppraisalDataController@structure_list');
+	Route::get('appraisal_data/al_list','AppraisalDataController@al_list');
+	Route::get('appraisal_data/period_list','AppraisalDataController@period_list');
+	Route::post('appraisal_data/auto_appraisal_item','AppraisalDataController@auto_appraisal_item');
+	Route::post('appraisal_data/auto_emp_name','AppraisalDataController@auto_emp_name');
+	Route::get('appraisal_data','AppraisalDataController@index');
+	Route::post('appraisal_data/export','AppraisalDataController@export');
+	Route::post('appraisal_data','AppraisalDataController@import');
+	
+	// Appraisal Assignment //
+	Route::get('appraisal_assignment/appraisal_type_list', 'AppraisalAssignmentController@appraisal_type_list');
+	Route::post('appraisal_assignment/auto_position_name', 'AppraisalAssignmentController@auto_position_name');
+	Route::get('appraisal_assignment/al_list', 'AppraisalAssignmentController@al_list');
+	Route::get('appraisal_assignment/period_list', 'AppraisalAssignmentController@period_list');
+	Route::get('appraisal_assignment/frequency_list', 'AppraisalAssignmentController@frequency_list');
+	Route::post('appraisal_assignment/auto_employee_name', 'AppraisalAssignmentController@auto_employee_name');
+	Route::get('appraisal_assignment', 'AppraisalAssignmentController@index');
+	Route::get('appraisal_assignment/template', 'AppraisalAssignmentController@assign_template');
+	Route::get('appraisal_assignment/new_assign_to', 'AppraisalAssignmentController@new_assign_to');
+	Route::get('appraisal_assignment/new_action_to', 'AppraisalAssignmentController@new_action_to');
+	Route::get('appraisal_assignment/edit_assign_to', 'AppraisalAssignmentController@edit_assign_to');
+	Route::get('appraisal_assignment/edit_action_to', 'AppraisalAssignmentController@edit_action_to');	
+	Route::get('appraisal_assignment/{emp_result_id}', 'AppraisalAssignmentController@show');	
+	Route::patch('appraisal_assignment/{emp_result_id}', 'AppraisalAssignmentController@update');	
+	Route::post('appraisal_assignment', 'AppraisalAssignmentController@store');	
+	
+	// Appraisal //
+	Route::get('appraisal/year_list', 'AppraisalController@year_list');
+	Route::get('appraisal/period_list', 'AppraisalController@period_list');
+	Route::get('appraisal/al_list', 'AppraisalController@al_list');
+	Route::get('appraisal/dep_list','AppraisalController@dep_list');
+	Route::get('appraisal/sec_list','AppraisalController@sec_list');
+	Route::get('appraisal/auto_position_name','AppraisalController@auto_position_name');
+	Route::get('appraisal/auto_employee_name','AppraisalController@auto_employee_name');
+	Route::get('appraisal','AppraisalController@index');
+	Route::get('appraisal/edit_assign_to', 'AppraisalController@edit_assign_to');
+	Route::get('appraisal/edit_action_to', 'AppraisalController@edit_action_to');		
+	Route::get('appraisal/{emp_result_id}','AppraisalController@show');	
+	Route::patch('appraisal/{emp_result_id}','AppraisalController@update');	
+	
+	// Database Connection //
+	Route::get('database_connection', 'DatabaseConnectionController@index');
+	Route::get('database_connection/db_type_list', 'DatabaseConnectionController@db_type_list');	
+	Route::post('database_connection', 'DatabaseConnectionController@store');
+	Route::get('database_connection/{connection_id}', 'DatabaseConnectionController@show');
+	Route::patch('database_connection/{connection_id}', 'DatabaseConnectionController@update');
+	Route::delete('database_connection/{connection_id}', 'DatabaseConnectionController@destroy');
+	
+	// System Config //
+	Route::get('system_config', 'SystemConfigController@index');
+	Route::patch('system_config', 'SystemConfigController@update');
+	Route::get('system_config/month_list', 'SystemConfigController@month_list');
+	Route::get('system_config/frequency_list', 'SystemConfigController@frequency_list');
+	
+	// Perspective //
+	Route::get('perspective', 'PerspectiveController@index');
+	Route::post('perspective', 'PerspectiveController@store');
+	Route::get('perspective/{perspective_id}', 'PerspectiveController@show');
+	Route::patch('perspective/{perspective_id}', 'PerspectiveController@update');
+	Route::delete('perspective/{perspective_id}', 'PerspectiveController@destroy');	
+	
+	// UOM //
+	Route::get('uom', 'UOMController@index');
+	Route::post('uom', 'UOMController@store');
+	Route::get('uom/{uom_id}', 'UOMController@show');
+	Route::patch('uom/{uom_id}', 'UOMController@update');
+	Route::delete('uom/{uom_id}', 'UOMController@destroy');		
+	
+	// Appraisal Structure //
+	Route::get('appraisal_structure', 'AppraisalStructureController@index');
+	Route::get('appraisal_structure/form_list', 'AppraisalStructureController@form_list');
+	Route::post('appraisal_structure', 'AppraisalStructureController@store');
+	Route::get('appraisal_structure/{structure_id}', 'AppraisalStructureController@show');
+	Route::patch('appraisal_structure/{structure_id}', 'AppraisalStructureController@update');
+	Route::delete('appraisal_structure/{structure_id}', 'AppraisalStructureController@destroy');
+	
+	// Threshold //
+	Route::get('threshold', 'ThresholdController@index');
+	Route::get('threshold/structure_list', 'ThresholdController@structure_list');
+	Route::post('threshold', 'ThresholdController@store');
+	Route::get('threshold/{threshold_id}', 'ThresholdController@show');
+	Route::patch('threshold/{threshold_id}', 'ThresholdController@update');
+	Route::delete('threshold/{threshold_id}', 'ThresholdController@destroy');			
+	
+	// Appraisal Level //
+	Route::get('appraisal_level', 'AppraisalLevelController@index');
+	Route::post('appraisal_level', 'AppraisalLevelController@store');
+	Route::get('appraisal_level/{appraisal_level_id}', 'AppraisalLevelController@show');
+	Route::patch('appraisal_level/{appraisal_level_id}', 'AppraisalLevelController@update');
+	Route::delete('appraisal_level/{appraisal_level_id}', 'AppraisalLevelController@destroy');	
+	Route::get('appraisal_level/{appraisal_level_id}/criteria', 'AppraisalLevelController@appraisal_criteria');	
+	Route::patch('appraisal_level/{appraisal_level_id}/criteria', 'AppraisalLevelController@update_criteria');
 
-	// Role //
-	Route::get('dqs_role/{role_id}/authorize', 'RoleController@roleauth');
-	Route::post('dqs_role/{role_id}/authorize', 'RoleController@authorization');
-	Route::resource('dqs_role', 'RoleController');
+	// Appraisal Grade //
+	Route::get('appraisal_grade', 'AppraisalGradeController@index');
+	Route::get('appraisal_grade/al_list', 'AppraisalGradeController@al_list');
+	Route::post('appraisal_grade', 'AppraisalGradeController@store');
+	Route::get('appraisal_grade/{grade_id}', 'AppraisalGradeController@show');
+	Route::patch('appraisal_grade/{grade_id}', 'AppraisalGradeController@update');
+	Route::delete('appraisal_grade/{grade_id}', 'AppraisalGradeController@destroy');	
 	
-	// Menu //
-	Route::get('dqs_menu/{menu_id}/authorize', 'MenuController@menuauth');
-	Route::post('dqs_menu/{menu_id}/authorize', 'MenuController@authorization');
-	Route::resource('dqs_menu', 'MenuController');	
-	
-	// System Configuration //
-	Route::get('dqs_system_config', 'SystemConfigController@index');
-	Route::post('dqs_system_config/kpi_date', 'SystemConfigController@kpi_date');
-	Route::post('dqs_system_config/export_file', 'SystemConfigController@export_file');
-	Route::post('dqs_system_config/import_file', 'SystemConfigController@import_file');
-	Route::post('dqs_system_config/warning_branch', 'SystemConfigController@warning_branch');
-	Route::post('dqs_system_config/grade_date', 'SystemConfigController@grade_date');
-	Route::post('dqs_system_config/default_role', 'SystemConfigController@default_role');
-	
-	// User //
-	Route::get('dqs_user/cost_center', 'UserController@auto_cost_center');
-	Route::get('dqs_user/revised_cost_center', 'UserController@list_revised_cost_center');
-	Route::get('dqs_user/personnel_id', 'UserController@auto_personnel');
-	Route::patch('dqs_user', 'UserController@update');
-	Route::get('dqs_user', 'UserController@index');
-	Route::post('dqs_user/export', 'UserController@export');
-	
-	// Rule //
-	Route::delete('dqs_rule/{rule_id}', 'RuleController@destroy');
-	Route::post('dqs_rule', 'RuleController@store');
-	Route::patch('dqs_rule/{rule_id}', 'RuleController@update');
-	Route::get('dqs_rule/rule_name', 'RuleController@auto_rule');
-	Route::get('dqs_rule/{rule_id}', 'RuleController@show');
-	Route::get('dqs_rule', 'RuleController@index');
-	Route::get('dqs_data_flow', 'RuleController@list_data_flow'); // To be moved
-	Route::patch('dqs_rule' ,'RuleController@update_flags');
-	
-	// Region //
-	Route::post('dqs_branch/region/getRegionName', 'RegionController@getRegionName');
-	Route::resource('dqs_region', 'RegionController');	
-	
-	// Grade //
-	Route::get('dqs_grade/rule_list', 'GradeController@list_rule');
-	Route::get('dqs_grade/{grade_id}/condition', 'GradeController@list_condition');
-	Route::post('dqs_grade/{grade_id}/condition', 'GradeController@add_condition');
-	Route::patch('dqs_grade/{grade_id}/condition', 'GradeController@update_condition');
-	Route::delete('dqs_grade/{grade_id}/condition/{condition_id}', 'GradeController@delete_condition');
-	Route::resource('dqs_grade', 'GradeController');
-	
-	// Import/Export //
-	Route::get('dqs_import_export/cust_type', 'ImportExportController@list_cust_type');
-	Route::post('dqs_import_export/export', 'ImportExportController@export_citizen');
-	Route::post('dqs_import_export/export_sms', 'ImportExportController@export_sms');
-	Route::post('dqs_import_export/import', 'ImportExportController@import_citizen');
-	Route::post('dqs_import_export/import_sms', 'ImportExportController@import_sms');
-	
-	// Citizen Import //
-	Route::post('dqs_citizen_import/npid', 'CitizenImportController@auto_npid');
-	Route::resource('dqs_citizen_import', 'CitizenImportController');
-	
-	// Monitoring //
-	Route::get('dqs_monitoring/cust_type', 'MonitoringController@list_cust_type');
-	Route::get('dqs_monitoring/branch_list', 'MonitoringController@list_branch');
-	Route::get('dqs_monitoring/rule', 'MonitoringController@list_rule');
-	Route::post('dqs_monitoring/cdmd/export', 'MonitoringController@cdmd_export');		// add to doc
-	Route::get('dqs_monitoring/cdmd/{header_id}', 'MonitoringController@cdmd_details');
-	Route::patch('dqs_monitoring/cdmd/{header_id}', 'MonitoringController@cdmd_update');
-	Route::get('dqs_monitoring/cdmd/{header_id}/explain', 'MonitoringController@cdmd_explain_details');
-	Route::patch('dqs_monitoring/cdmd/{header_id}/explain', 'MonitoringController@cdmd_update_explain');
-	Route::get('dqs_monitoring/cdmd', 'MonitoringController@cdmd_index');
-	Route::post('dqs_monitoring/branch/export', 'MonitoringController@branch_export');		// add to doc
-	Route::patch('dqs_monitoring/branch/{header_id}', 'MonitoringController@branch_update');
-	Route::get('dqs_monitoring/branch/{header_id}', 'MonitoringController@branch_details');
-	Route::get('dqs_monitoring/branch/{header_id}/explain', 'MonitoringController@branch_explain_details');
-	Route::patch('dqs_monitoring/branch/{header_id}/explain', 'MonitoringController@branch_update_explain');
-	Route::get('dqs_monitoring/branch', 'MonitoringController@branch_index');
-	Route::post('dqs_monitoring/branch/{header_id}/explain', 'MonitoringController@branch_upload_explain');
-	Route::delete('dqs_monitoring/branch/{header_id}/explain/{file_id}', 'MonitoringController@branch_delete_explain');
-	
-	// Maintenance //
-	Route::get('dqs_maintenance/contact_type', 'MaintenanceController@contact_type');
-	Route::post('dqs_maintenance/import_log', 'MaintenanceController@import_log');
-	Route::post('dqs_maintenance/import_log/export', 'MaintenanceController@export_import_log');
-	Route::post('dqs_maintenance/reject_log', 'MaintenanceController@reject_log');
-	Route::post('dqs_maintenance/reject_log/export', 'MaintenanceController@export_reject_log');
-	Route::get('dqs_maintenance/usage_log', 'MaintenanceController@usage_log');
-	Route::post('dqs_maintenance/usage_log/export', 'MaintenanceController@export_usage_log');
-	Route::post('dqs_maintenance/personnel_name', 'MaintenanceController@auto_personnel_name');
-	
-	// Operation Report//
-	Route::get('dqs_operation_report/province_list', 'OperationReportController@list_province');
-	Route::post('dqs_operation_report/auto_name', 'OperationReportController@auto_name');
-	Route::post('dqs_operation_report/auto_surname', 'OperationReportController@auto_surname');
-	Route::get('dqs_operation_report/operation_list', 'OperationReportController@list_operation');
-	Route::get('dqs_operation_report/region_list', 'OperationReportController@list_region');
-	Route::get('dqs_operation_report/district_list', 'OperationReportController@list_district');
-	Route::get('dqs_operation_report/branch_list', 'OperationReportController@list_branch');
-	Route::get('dqs_operation_report/no_progress', 'OperationReportController@no_progress');
-	Route::post('dqs_operation_report/no_progress/export', 'OperationReportController@no_progress_export');
-	Route::get('dqs_operation_report/progressed', 'OperationReportController@progressed');
-	Route::post('dqs_operation_report/progressed/export', 'OperationReportController@progressed_export');
-	Route::get('dqs_operation_report/customer', 'OperationReportController@customer');	
-	Route::post('dqs_operation_report/customer/export', 'OperationReportController@customer_export');	
-	Route::get('dqs_operation_report/overdue_kpi', 'OperationReportController@overdue_kpi');	
-	Route::post('dqs_operation_report/overdue_kpi/export', 'OperationReportController@overdue_kpi_export');	
-	Route::get('dqs_operation_report/merge_cif', 'OperationReportController@merge_cif');
-	Route::post('dqs_operation_report/merge_cif/export', 'OperationReportController@merge_cif_export');
-	Route::get('dqs_operation_report/kpi_result', 'OperationReportController@kpi_result');
-	Route::post('dqs_operation_report/kpi_result/export', 'OperationReportController@kpi_result_export');	
+	// Appraisal Period //
+	Route::get('appraisal_period', 'AppraisalPeriodController@index');
+	Route::get('appraisal_period/appraisal_year_list', 'AppraisalPeriodController@appraisal_year_list');
+	Route::get('appraisal_period/start_month_list', 'AppraisalPeriodController@start_month_list');
+	Route::get('appraisal_period/frequency_list', 'AppraisalPeriodController@frequency_list');
+	Route::post('appraisal_period/auto_desc', 'AppraisalPeriodController@auto_desc');
+	Route::post('appraisal_period/create', 'AppraisalPeriodController@create');
+	Route::post('appraisal_period', 'AppraisalPeriodController@store');
+	Route::get('appraisal_period/{period_id}', 'AppraisalPeriodController@show');
+	Route::patch('appraisal_period/{period_id}', 'AppraisalPeriodController@update');
+	Route::delete('appraisal_period/{period_id}', 'AppraisalPeriodController@destroy');		
 	
 	Route::get('404', ['as' => 'notfound', function () {
 		return response()->json(['status' => '404']);
